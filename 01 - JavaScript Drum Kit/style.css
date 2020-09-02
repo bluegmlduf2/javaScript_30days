@@ -1,0 +1,58 @@
+html {
+  font-size: 10px;
+  /* background: url(https://i.imgur.com/b9r5sEL.jpg) bottom center;
+  background-size: cover; */
+}
+
+body,html {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.keys {
+  /* 가운데 정렬 IE10 부터 적용 가능함 flex표현 */
+  display: flex;/*div정렬을 위한 속성변경*/
+  align-items: center;/* 수직정렬(부모) */
+  justify-content: center;/* 수평정렬(부모) */
+  flex: 1;/*정렬 비율 */
+  min-height: 100vh;/*최소높이 1vh:해당 콤포넌트크기의 1/100 */
+
+}
+
+.key {
+  border: .4rem solid black;
+  border-radius: .5rem;
+  margin: 1rem;
+  font-size: 1.5rem;
+  padding: 1rem .5rem;
+  transition: all .07s ease;/*변화이벤트 변화범위all:4면 0.7초 ease한 변화스타일*/
+  width: 10rem;
+  text-align: center;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  text-shadow: 0 0 .5rem black;
+}
+
+/*
+자바스크립트에 의해 동적으로 추가된 클래스
+실행순서가 다르다. 일반적으로 load시 렌더링엔진이 CSS를 렌더링(그려) 해준다
+하지만 .playing는 자바스크립트 이벤트 발생시 CSS가 그려진다
+*/
+.playing {
+  transform: scale(1.1);/*요소확대 이벤트 scale(크기)*/
+  border-color: #ffc600;
+  box-shadow: 0 0 1rem #ffc600;
+}
+
+kbd {
+  display: block;
+  font-size: 4rem;
+}
+
+.sound {
+  font-size: 1.2rem;
+  text-transform: uppercase;/*글자 대문자 출력*/
+  letter-spacing: .1rem;
+  color: #ffc600;
+}
