@@ -81,7 +81,8 @@
 
       if (!audio) return; //audio엘리먼트가 없으면 해당함수 종료
       audio.play();//audio엘리먼트의 내장함수
-      audio.currentTime=0; //재생하고나서 바로 재생시작 0으로 초기화
+      audio.currentTime=0; //1회 클릭시 음악 종료전까지 재생 시작점이 초기화되지않는다. 그래서 해당 버튼을 다시 클릭할때 시작점이 없어서 음악버튼이 동작이안된다
+      //그래서 수동으로 currentTime=0로 시작점을 초기화함 (연속적으로 클릭해서 소리가 나올수있도록)
     });
 
     const keyElements = document.querySelectorAll('.key');
