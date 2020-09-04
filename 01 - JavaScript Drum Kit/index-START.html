@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 
   <div class="keys">
     <div data-key="65" class="key">
-      <kbd>A</kbd> <!--kbd태그 웹브라우저에서 사용하는 폰트를 사용함-->
+      <kbd>A</kbd>
+      <!--kbd태그 웹브라우저에서 사용하는 폰트를 사용함-->
       <span class="sound">clap</span>
     </div>
     <div data-key="83" class="key">
@@ -57,24 +60,40 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
-<script>
+  <script>
+    //Callback function of transition'end' Of CssProperty 
+    function removeClassFunc(e) {
+   //e.propertyName ==현재 작동시킨 CSS 이벤트 속성명
+      if(e.propertyName!=='transform')return;
+      e.target.classList.remove('playing');
+    }
 
+    //window :웹브라우저 ,전역객체 //키보드입력이벤트
+    window.addEventListener('keydown', (e) => {
+      //템플릿 리터럴 백틱`${}` ,`` 백틱내부에서 줄바꿈을 사용하면 \n을 사용해서 줄바꿀을 사용할 필요가없다.
+      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+      const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+      //querySelectorAll는 반환값이 하나던 여러개던 nodeList(배열)을 반환하는데 이를 forEach()문등으로 사용하는 경우가 많다.
+      //nodeList는 node들의 배열(컬렉션)이다.노드배열!=일반배열이다.성질이 다르다. 그렇기때문에 사용할땐 일반 배열로 바꿔줘야한다.
+      //컬렉션 => 프라퍼티1,프라퍼티2,객체묶음 (length8,div[5]) , 배열(div[5]) ..이게 차이인걸까..(애매) 
+      key.classList.add('playing')
+      //add('playing');//해당 엘리멘트에 클래스 추가. classlist.add('클래스명')
 
-//window :웹브라우저 ,전역객체
-window.addEventListener('keydown',(e)=>{
-  //템플릿 리터럴 백틱`${}` ,`` 백틱내부에서 줄바꿈을 사용하면 \n을 사용해서 줄바꿀을 사용할 필요가없다.
-   const audio=document.querySelector(`audio[data-key="${e.keyCode}"]`);
-   const key=document.querySelectorAll(`div.key[data-key="${e.keyCode}"]`);
-   key.classlist.add('playing');//해당 엘리멘트에 클래스 추가. classlist.add('클래스명')
+      if (!audio) return; //audio엘리먼트가 없으면 해당함수 종료
+      audio.play();//audio엘리먼트의 내장함수
+      audio.currentTime=0; //재생하고나서 바로 재생시작 0으로 초기화
+    });
 
-   if(!audio)return;//audio엘리먼트가 없으면 해당함수 종료
-   //audio.play();//audio엘리먼트의 내장함수 
-   console.log(key);
-});
+    const keyElements = document.querySelectorAll('.key');
 
-
-</script>
+    keyElements.forEach(element => {
+      element.addEventListener('transitionend', removeClassFunc);
+      //element.addEventListener('transitionend', removeClassFunc()); 콜백함수가 removeClassFunc()로 되어있으면 바로 실행시켜버려서 에러
+    });
+    //keyElement.forEach(key=>key.addEventListener('transitionend',removeClassFunc()));//CSS의 변화(애니메이션)속성이 끝난 후 동작
+  </script>
 
 
 </body>
+
 </html>
