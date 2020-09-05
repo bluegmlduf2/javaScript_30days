@@ -10,13 +10,21 @@ body,html {
   font-family: sans-serif;
 }
 
+.volumeBar{
+  /* 가운데 정렬 IE10 부터 적용 가능함 flex표현 */
+  display: flex;/*div정렬을 위한 속성변경*/
+
+  justify-content: center;/* 수평정렬(부모) */
+  flex: 1;/*정렬 비율 */
+}
+
 .keys {
   /* 가운데 정렬 IE10 부터 적용 가능함 flex표현 */
   display: flex;/*div정렬을 위한 속성변경*/
   align-items: center;/* 수직정렬(부모) */
   justify-content: center;/* 수평정렬(부모) */
   flex: 1;/*정렬 비율 */
-  min-height: 100vh;/*최소높이 1vh:해당 콤포넌트크기의 1/100 */
+  min-height: 50vh;/*최소높이 1vh:해당 콤포넌트크기의 1/100 */
 
 }
 

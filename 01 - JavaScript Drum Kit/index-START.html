@@ -50,6 +50,8 @@
     </div>
   </div>
 
+  <div class="volumeBar"><input type="range" class="volume" min="1" max="100" value="50"></div>
+
   <audio data-key="65" src="sounds/clap.wav"></audio>
   <audio data-key="83" src="sounds/hihat.wav"></audio>
   <audio data-key="68" src="sounds/kick.wav"></audio>
@@ -60,11 +62,12 @@
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
+
   <script>
     //Callback function of transition'end' Of CssProperty 
     function removeClassFunc(e) {
-    //e.propertyName ==현재 작동시킨 CSS 이벤트 속성명
-      if(e.propertyName!=='transform')return;
+      //e.propertyName ==현재 작동시킨 CSS 이벤트 속성명
+      if (e.propertyName !== 'transform') return;
       e.target.classList.remove('playing');
     }
 
@@ -73,6 +76,7 @@
       //템플릿 리터럴 백틱`${}` ,`` 백틱내부에서 줄바꿈을 사용하면 \n을 사용해서 줄바꿀을 사용할 필요가없다.
       const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
       const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+      const volumeBar=document.querySelector('.volume');
       //querySelectorAll는 반환값이 하나던 여러개던 nodeList(배열)을 반환하는데 이를 forEach()문등으로 사용하는 경우가 많다.
       //nodeList는 node들의 배열(컬렉션)이다.노드배열!=일반배열이다.성질이 다르다. 그렇기때문에 사용할땐 일반 배열로 바꿔줘야한다.
       //컬렉션 => 프라퍼티1,프라퍼티2,객체묶음 (length8,div[5]) , 배열(div[5]) ..이게 차이인걸까..(애매) 
@@ -80,8 +84,17 @@
       //add('playing');//해당 엘리멘트에 클래스 추가. classlist.add('클래스명')
 
       if (!audio) return; //audio엘리먼트가 없으면 해당함수 종료
-      audio.play();//audio엘리먼트의 내장함수
-      audio.currentTime=0; //1회 클릭시 음악 종료전까지 재생 시작점이 초기화되지않는다. 그래서 해당 버튼을 다시 클릭할때 시작점이 없어서 음악버튼이 동작이안된다
+     
+     //VOLUME
+      if(volumeBar.value==1){
+        audio.muted=true;
+      }else{
+        audio.muted=false;
+        audio.volume=volumeBar.value/100;
+      }
+      
+      audio.play(); //audio엘리먼트의 내장함수
+      audio.currentTime = 0; //1회 클릭시 음악 종료전까지 재생 시작점이 초기화되지않는다. 그래서 해당 버튼을 다시 클릭할때 시작점이 없어서 음악버튼이 동작이안된다
       //그래서 수동으로 currentTime=0로 시작점을 초기화함 (연속적으로 클릭해서 소리가 나올수있도록)
     });
 
