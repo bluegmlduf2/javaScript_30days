@@ -89,7 +89,7 @@
     const hoursHand = document.querySelector('.hour-hand');
     const digitalClock = document.querySelector('.digitalClock');
 
-    //LPAD구현
+    //LPAD구현 //String 객체를 사용할 때(정의가아니라사용) 사용할 lpad객체를 만든다 스트링객체.lpad하면 이 함수가 실행된다. 이해됨!
     String.prototype.lpad = function(padString, padLength){
     var s = this; //해당 this는 lpad를 호출한 String변수(객체)를 가리킨다.//여기선 hours,minutes,seconds
     while(s.length < padLength)
