@@ -28,6 +28,10 @@ body,html {
 
 }
 
+/*
+transform: 해당 엘리먼트의 동작제어 (크기,이동,회전)
+transition: 해당 엘리먼트의 요소의 변화 제어
+*/
 .key {
   border: .4rem solid black;
   border-radius: .5rem;
@@ -49,7 +53,7 @@ body,html {
 */
 .playing {
   transform: scale(1.1);/*요소확대 이벤트 scale(크기)*/
-  border-color: #ffc600;
+  border-color: #ffc600;/*.key애서 속성에 설정된 transision이 동작함*/
   box-shadow: 0 0 1rem #ffc600;
 }
 

@@ -67,6 +67,7 @@
     //Callback function of transition'end' Of CssProperty 
     function removeClassFunc(e) {
       //e.propertyName ==현재 작동시킨 CSS 이벤트 속성명
+      //.playing의 transform:scale(1.1)이 적용된 상태라면 해당 클래스를 취소한다.
       if (e.propertyName !== 'transform') return;
       e.target.classList.remove('playing');
     }

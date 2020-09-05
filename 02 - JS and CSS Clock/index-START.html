@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+
+<body>
+  <div class="digitalClock"></div>
+
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand"></div>
+      <div class="hand min-hand"></div>
+      <div class="hand second-hand"></div>
+    </div>
+  </div>
+
+  <style>
+    html {
+      /* background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5); */
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .digitalClock {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);/*transform으로 가운데정렬*/
+      color: black;
+      font-size: 40px;
+      font-family: Orbitron;
+      letter-spacing: 7px;/*줄간격*/
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid black;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px);
+      /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+      transform: rotate(90deg);/*시간의 시작점은 12시 이기때문에 90도로 맞춰준다 :초기값*/
+      transform-origin: 100%;/*transForm이 동작하는 위치 default 50%이다. 100%일 경우 요소의 가장 오른쪽에서 transform한다*/
+      /*transition: all 0.05s;All(모든요소)에 transition을 적용시킨다. rotate를 시킬때 rotate되는 속도는 0.05s간 진행된다*/
+      /*transition-timing-function: cubic-bezier(0, 1.49, 0.98, -0.07);/* transition이 움직이는 동작 표현(똑딱거림) */
+    }
+    
+  </style>
+
+  <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minutesHand = document.querySelector('.min-hand');
+    const hoursHand = document.querySelector('.hour-hand');
+    const digitalClock = document.querySelector('.digitalClock');
+
+    //LPAD구현
+    String.prototype.lpad = function(padString, padLength){
+    var s = this; //해당 this는 lpad를 호출한 String변수(객체)를 가리킨다.//여기선 hours,minutes,seconds
+    while(s.length < padLength)
+        s = padString + s;
+    return s;
+    }
+
+
+    function countTime() {
+      const date = new Date();
+      const seconds = date.getSeconds();
+      const minutes = date.getMinutes();
+      const hours = date.getHours();
+
+      const secondsDegree = ((seconds / 60) * 360) + 90; //90을 더 해준 이유는 65행의 초기값 90deg를 맞추기 위하여
+      const minutesDegree = ((minutes / 60) * 360) + 90;
+      const hoursDegree = ((hours / 12) * 360) + 90;
+
+      secondHand.style.transform = `rotate(${secondsDegree}deg)`;
+      minutesHand.style.transform = `rotate(${minutesDegree}deg)`;
+      hoursHand.style.transform = `rotate(${hoursDegree}deg)`;
+      digitalClock.textContent=`${hours.toString().lpad('0',2)+':'+minutes.toString().lpad('0',2)+':'+ seconds.toString().lpad('0',2)}`;
+    }
+
+    setInterval(countTime, 1000); //비동기함수 1초 후 실행
+  </script>
+</body>
+
+</html>
