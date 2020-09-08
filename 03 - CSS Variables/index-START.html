@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scoped CSS Variables and JS</title>
+</head>
+<body>
+  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+
+  <div class="controls">
+    <label for="spacing">Spacing:</label>
+    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+    <label for="blur">Blur:</label>
+    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+    <label for="base">Base Color</label>
+    <input id="base" type="color" name="base" value="#ffc600">
+
+    <label for="deg">Rotate</label>
+    <input id="deg" type="range" name="deg" min="0" max="360" value="0" data-sizing="deg">
+  </div>
+
+  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+
+  <style>
+
+    /*
+      misc styles, nothing to do with CSS variables
+    */
+    /*사용자 CSS속성 선언문은 :root{ --변수명:속성값}*/
+    :root{
+      --spacing:10px;
+      --base:#f7e11b;
+      --blur:10px;
+      --deg:0deg;
+    }
+
+    /*사용시 var(--변수명으로사용)*/
+    /*이렇게 사용함으로써 JS로 쉽게 조정이 가능하다*/
+    img{ 
+      transform: rotate(var(--deg));
+      padding:var(--spacing);
+      background-color: var(--base);
+      filter:blur(var(--blur));
+      width: 500px;
+      height: 400px;
+      transition: all 2s;/*all = 모든 속성에 transition을 적용.*/
+      /* width,height,rotate속도등.. 그리고 부모에 구체적인 width,height가 적용되어있어야 transition이 적용된다*/
+    }
+
+    img:hover {
+      width:700px;
+      height: 500px;
+    }
+
+    /*h1 = block속성*/
+    .hl{
+      color:var(--base);
+    }
+
+    body {
+      text-align: center;
+      background: #67696b;
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+
+    .controls {
+      margin-bottom: 100px;
+    }
+    /*input태그는 inline속성, button태그도 inline속성*/
+    input {
+      width: 100px;
+    }
+  </style>
+
+  <script>
+      const changeProp=function(){
+        //dataset속성을 사용할 경우 data-sizing -> dataset.sizing으로 사용한다
+        const suffix=this.dataset.sizing||''; // ||''를 붙이면 undefiened인 경우 공백으로 만들어준다.
+        
+        //document.documentElement.style.setProperty('속성명',속성값)
+        //document.documentElement // (HTML)을 뜻함. document는 HTML의 상위 객체 :root의 style에 접근할 경우 
+        document.documentElement.style.setProperty(`--${this.name}`,`${this.value}`+suffix)
+        
+        //일반 css에 접근할 경우
+        document.querySelector('.hl').style.setProperty('color','red');//style은 가장 마지막에 적용된걸 따른다
+      }
+
+      const inputs=document.querySelectorAll(".controls input");
+      
+      //inputs의 반환형은 nodelist
+      //nodelist는 __proto__을 가지고있다. 이는 해당 nodelist가 new()객체생성 될 때 포함된 기본 메서드이다. ex)foreach..
+      console.log(inputs);
+      
+      inputs.forEach(input=>input.addEventListener('mousemove',changeProp));//range에 작동하는 mousemove 이벤트
+      inputs.forEach(input=>input.addEventListener('change',changeProp)); //color에 작동하는 change 이벤트
+  </script>
+
+</body>
+</html>
