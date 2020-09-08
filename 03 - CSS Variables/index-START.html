@@ -78,14 +78,17 @@
   </style>
 
   <script>
-      const changeProp=function(){
+      const changeProp=function(e){
         //dataset속성을 사용할 경우 data-sizing -> dataset.sizing으로 사용한다
         const suffix=this.dataset.sizing||''; // ||''를 붙이면 undefiened인 경우 공백으로 만들어준다.
         
         //document.documentElement.style.setProperty('속성명',속성값)
         //document.documentElement // (HTML)을 뜻함. document는 HTML의 상위 객체 :root의 style에 접근할 경우 
         document.documentElement.style.setProperty(`--${this.name}`,`${this.value}`+suffix)
-        
+      
+          console.log(e); //이벤트 객체  MouseEvent {..}
+          console.log(e.target);//이벤트 발생 시킨 태그 (많이 사용할듯함)  <input id="spacing" type="range"..> 
+          
         //일반 css에 접근할 경우
         document.querySelector('.hl').style.setProperty('color','red');//style은 가장 마지막에 적용된걸 따른다
       }
