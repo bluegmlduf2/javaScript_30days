@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flex Panels 💪</title>
+  <link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <style>
+    html {
+      box-sizing: border-box;
+      background: #ffc600;
+      font-family: 'helvetica neue';
+      font-size: 20px;
+      font-weight: 200;
+    }
+    
+    body {
+      margin: 0;
+    }
+    
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+
+/*상위엘리먼트 
+  display:flex
+*/
+    .panels {
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+/*하위엘리먼트 
+  flex:1 //main-axis비율
+  flex-direction: column; //정렬 방향 :세로 
+  justify-content: center;//수평정렬
+*/
+    .panel {
+      background: #6B0F9C;
+      box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
+      color: white;
+      text-align: center;
+      align-items: center;
+      /* Safari transitionend event.propertyName === flex */
+      /* Chrome + FF transitionend event.propertyName === flex-grow */
+      /*
+        해당 transition은 transitionEndFucn()의 대상이 된다.
+        해당 .panel.open{flex:5;}의 flex transition이 종료된 후 transitionEndFucn()가 실행된다
+      */
+      transition:
+        font-size 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
+        flex 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),/*transitionEndFucn()의 e.propertyName에서 사용된다. */
+        background 0.2s;
+      font-size: 20px;
+      background-size: cover;
+      background-position: center;
+      flex:1;
+      display: flex;
+      flex-direction: column; /*정렬 방향 컬럼형 : main-axis는세로가 된다*/
+      justify-content: center;/*main-axis의 가운데 정렬*/
+      /* align-items: center;  */
+    }
+
+    /*개발의 편의성을 위해서*/
+    .panel >*{
+      border:1px solid red
+    }
+
+    /*5개의 div중에 첫번쨰 자식 패널의 P태그의 세로축의 위로 이동*/
+    .panel > *:first-child{
+      transform:translateY(-300px)
+    }
+    /*5개의 div중에 첫번쨰 자식 패널의 클래스가 toggle_act클래스를 가지고있고, 첫번째 P태그의 이동을 Y축의 0으로한다.*/
+    .panel.toggle_act > *:first-child{
+      transform:translateY(0px);
+    }
+    .panel > *:last-child{
+      transform:translateY(+300px)
+    }
+    .panel.toggle_act > *:last-child{
+      transform:translateY(0px)
+    }
+
+    /*5개의 div중에 하나에 크기를 변경함*/
+    /*  
+    .classNameA .classNameB =>클래스네임A안에 클래스네임B를가진 태그
+    .classNameA.classNameB  =>클래스네임A와 클래스네임B를 동시에 가진 태그
+    */
+    .panel.open{
+      flex:5;
+      font-size: 2em;
+    }
+
+    /* .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
+    .panel2 { background-image:url(https://source.unsplash.com/rFKUFzjPYiQ/1500x1500); }
+    .panel3 { background-image:url(https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&w=1500&h=1500&fit=crop&s=967e8a713a4e395260793fc8c802901d); }
+    .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
+    .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); } */
+
+    /* Flex Children */
+    .panel > * {
+      margin: 0;
+      width: 100%;
+      transition: transform 0.5s;
+    }
+
+    .panel p {
+      text-transform: uppercase;
+      font-family: 'Amatic SC', cursive;
+      text-shadow: 0 0 4px rgba(0, 0, 0, 0.72), 0 0 14px rgba(0, 0, 0, 0.45);
+      font-size: 2em;
+    }
+    
+    .panel p:nth-child(2) {
+      font-size: 4em;
+    }
+  </style>
+
+
+  <div class="panels">
+    <div class="panel panel1">
+      <p>Hey</p>
+      <p>Let's</p>
+      <p>Dance</p>
+    </div>
+    <div class="panel panel2">
+      <p>Give</p>
+      <p>Take</p>
+      <p>Receive</p>
+    </div>
+    <div class="panel panel3">
+      <p>Experience</p>
+      <p>It</p>
+      <p>Today</p>
+    </div>
+    <div class="panel panel4">
+      <p>Give</p>
+      <p>All</p>
+      <p>You can</p>
+    </div>
+    <div class="panel panel5">
+      <p>Life</p>
+      <p>In</p>
+      <p>Motion</p>
+    </div>
+  </div>
+
+  <script>
+    const panels=document.querySelectorAll('.panel');
+
+    /*
+    토글 이벤트 발생
+    확대기능
+    */
+    function openToggleFunc(){
+      this.classList.toggle('open');
+    }
+    /*
+    트랜지션 종료이벤트 발생
+    폰트의 위치이동 
+    */
+    function transitionEndFucn(e){
+      //이벤트의 속성명 e.propertyName 이 flex라는 문자열을 포함하는 경우에만 동작
+      if(e.propertyName.includes('flex')){
+        this.classList.toggle('toggle_act');
+      }
+    }
+
+    panels.forEach(panel=>panel.addEventListener('click',openToggleFunc));
+    panels.forEach(panel=>panel.addEventListener('transitionend',transitionEndFucn));
+    
+  </script>
+
+
+
+</body>
+</html>
