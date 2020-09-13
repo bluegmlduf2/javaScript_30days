@@ -46,15 +46,16 @@
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
     const fifteen = inventors.filter(inventor => (inventor.year >= 1500 && inventor.year < 1600));
-
+    //대상배열.filter(return 조건)   :  대상배열로 부터 조건에 일치하는 값만 남긴다
+    
     console.table(fifteen);
 
     /*
-      1.array.filter(); 배열 내에서 조건에 맞는 값만 구함
+      1.array.filter(()=>{return 조건}); 배열 내에서 조건에 맞는 값만 구함
       arrayObj.forEach(arr=>{arr.key})
     */
 
-    // Array.prototype.map()
+    // Array.prototype.map() -->동적으로 태그 만들때 .join('')과 묶어서 사용할만함.
     // 2. Give us an array of the inventor first and last names
     const fullNames = inventors.map(inventor => `${inventor.first} ${inventor.last}`);
     console.log(fullNames);
