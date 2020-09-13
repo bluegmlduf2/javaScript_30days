@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+  <script>
+    const endpoint =
+      'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+    /*
+      fetch는 ES6부터 사용됨. promise를 반환한다.
+      fetch API를 참고.
+      fat Arrow function참고. ()=>{return a;}
+    */
+    const cities = [];
+
+    /*endpoint->cities*/
+    fetch(endpoint).then(
+      obj => obj.json()
+    ).then(
+      /* data -> obj.json().arr[0] */
+      data => cities.push(...data) // ..data ->['1']['2']['3'].. 
+    )
+
+    /*findMatches메서드의 반환형 filter의 결과*/
+    const findMatches = (input) => {
+      //배열obj.filter(function(obj){ruturn obj.a='1'})
+      return cities.filter(obj => {
+        const reg = new RegExp(input, 'gi'); //g는 문자열속 일치하는 값 전부가져옴, i는 대소문자 구분안함
+        /*filter 메서드에서 필요한 return*/
+        return obj.city.match(reg)||obj.state.match(reg); //문자열obj.city.match(정규형obj) 문자열obj.city에서 reg와 일치하는 값을 구한다. 
+        /* 
+          return A or B;
+          A,B둘 중 하나라도 참(true)이 있다면 참의 값을 반환한다.
+          즉, city,state 둘중 일치하는 정보가 있으면 참이 되고 해당정보 반환.
+          return A || B : 리턴문으로 A||B로 반환이 된다는 점을 주목
+        */
+      })
+    }
+
+    /*숫자 3자리마다 컴마 표시*/
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    
+    const search=document.querySelector('.search');
+    const suggestions=document.querySelector('.suggestions');
+
+
+    function displayFunc(){
+      let inputValue=this.value;
+      let matchedCities=findMatches(inputValue);
+
+      const reg = new RegExp(this.value, 'gi'); //replace변수를 사용하기 위함
+      
+      //동적인 html 생성시 map().join('')을 많이 사용함
+      const createdDom=matchedCities.map(obj=>{
+        let spanTagCity=obj.city.replace(reg,`<span class="hl">${this.value}</span>`);
+        //obj.city중에 입력한 도시명과 일치한다면 해당 행을 <span>..</span>으로 변경, 또한 여기서 this.value는 obj.city이다.
+        let spanTagState=obj.state.replace(reg,`<span class="hl">${this.value}</span>`);
+        return `
+          <li>
+            <span class="name">${spanTagCity}, ${spanTagState}</span>
+            <span class="population">${numberWithCommas(obj.population)}</span>
+          </li>
+        `;
+      }).join(''); //배열.join('') -->배열들을 하나의 문자열로 합친다. ['a','b','c'].join('/') ==> "a/b/c"
+
+      suggestions.innerHTML=createdDom
+    }
+
+    search.addEventListener('change',displayFunc);
+    search.addEventListener('keyup',displayFunc);
+
+    //push(...data) //=> push(['1']['2']['3']['4']..)
+    /*
+      export class a(){
+        static props = {
+          className: '',
+          name: '저장',
+          onClick: () => {}
+        }
+        
+        render() {
+          let { className, ...props } = this.props; 
+          //className --> ''
+          //...props --> name,onclick()
+        }
+      }
+    */
+  </script>
+</body>
+
+</html>
