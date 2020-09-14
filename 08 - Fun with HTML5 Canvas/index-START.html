@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+
+<body>
+  <canvas id="draw" width="800" height="800"></canvas>
+  <script>
+    const canvas = document.querySelector('#draw');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const ctx = canvas.getContext('2d'); //Context : 연관,관계 :잇는것
+    ctx.strokeStyle = '#BADA55'; //선의 스타일:색상
+    ctx.lineJoin = 'round'; //선의 형태
+    ctx.lineCap = 'round' //선의 형태
+    ctx.lineWidth = 50; //선의 두께 
+
+    let isClick = false; //클릭중일떄 참이된다.
+    let lastX = 0; //지난 x값
+    let lastY = 0; //지난 y값
+
+    let hue = 0; //선 색상 초기값
+    let direction = true;//선 굵기를 위한 플래그
+
+    /*마우스 클릭 후 드래그시 작동, 
+    X,Y의 움직임 1픽셀마다 동작 (중요)*/
+    function draw(e) {
+      if (!isClick) return; //isClick이 false일 경우엔 return
+      console.log(e); //이벤트가 얼마에 한번 실행되나 체크해보세요
+      ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; /*선의 색상변경 https://www.w3schools.com/colors/colors_picker.asp의 hsl참고*/
+      
+      ctx.beginPath(); //Path 초기화
+      ctx.moveTo(lastX, lastY) // FROM 위치
+      ctx.lineTo(e.offsetX, e.offsetY) //TO 위치
+      ctx.stroke(); //선을 긋는 메서드.
+
+      [lastX, lastY] = [e.offsetX, e.offsetY]; //선을 긋고 난 이후 현재 위치를 이전의 위치로 저장
+
+      hue++;
+      //색상이 빨주노초파남보 ~ 360이다. 굳이 360을 초과해도 상관없긴함
+      if (hue >= 360) {
+        //console.log(hue)
+        hue = 0;
+      }
+
+      // lineWidth(선의 굵기)가 10~90을 초과하거나 미만일때 direction을 변경
+      if (ctx.lineWidth >= 90 || ctx.lineWidth <= 10) {
+        direction = !direction;
+      }
+
+      //선의 굵기
+      if (direction) {
+        ctx.lineWidth++;
+      } else {
+        ctx.lineWidth--;
+      }
+
+    }
+
+    //클릭한 순간 isClick을 true로바꾸는 트리거 
+    canvas.addEventListener('mousedown', (e) => {
+      isClick = true;
+      [lastX, lastY] = [e.offsetX, e.offsetY]; //구조 분해 할당 [a,b]=[A,B] a,b에 A,B를 할당
+    });
+
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', () => isClick = false);
+    canvas.addEventListener('mouseout', () => isClick = false);
+  </script>
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+  </style>
+
+</body>
+
+</html>
