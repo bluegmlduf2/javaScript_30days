@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+<body>
+  
+  <!-- 구글 크롬 기준:
+   엘리멘트 해당 속성 우측클릭 후 -> break on -> Attribute Modified ->css등 다양한 속성 변경시 break가 된다-->
+  <p class='test' onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    /*중요할것 같은것.
+    console.dir(p)
+    console.time('fetching data')
+    console.timeEnd('fetching data');
+    console.table(dogs);
+    */
+  
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+    // clearing
+    console.clear();
+
+    // Regular
+    console.log('hello'); //일반
+
+    // Interpolated
+    console.log('Hello I am a %s string!', '💩'); /* %s 에 파라메터 문자열 삽입 */ 
+
+    // Styled
+     console.log('%c I am some great text', 'font-size:15px; background:red; text-shadow: 10px 10px 0 blue') /* console에 해당 css 적용*/
+
+    // warning!
+    console.warn('OH NOOO');/* console 경고 */
+
+    // Error :|
+    console.error('Shit!');/* console 에러 */
+
+    // Info
+    console.info('Crocodiles eat 3-4 people per year');/* console 정보 */
+
+    // Testing
+    const p = document.querySelector('p');
+
+    //console.log의 if문
+    console.assert(p.classList.contains('test'), 'That is wrong!');/* console의 if문.. 해당태그가 test클래스를 가지고있다면 아무것도 출력하지않음 */
+    console.assert(p.classList.contains('ouch'), 'That is wrong!');/* console의 if문.. 해당태그가 ouch클래스를 가지고있다면 아무것도 출력하지않음 */
+
+
+    // Viewing DOM Elements
+    console.log(p); /*일반적으로 DOM태그를 보여줌*/
+    console.dir(p); /*(중요)DOM태그가 포함하고 있는 정보를 리스트로 보여줌*/
+
+    // Grouping together
+    /*그룹으로 표시해주는 console*/
+    dogs.forEach(dog => {
+      console.groupCollapsed(`${dog.name}`); /*그룹시작*/
+      console.log(`This is ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.log(`${dog.name} is ${dog.age * 7} dog years old`);
+      console.groupEnd(`${dog.name}`);/*그룹종료*/
+    });
+
+    // counting
+    /*해당 문자열이 몇번 나왔나 체크*/
+    console.count('Wes');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Wes');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+    console.count('Steve');
+
+    // timing
+    console.time('fetching data');/*시간체크시작*/
+    fetch('https://api.github.com/users/wesbos')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('fetching data');/*시간체크종료*/
+        console.log(data);
+      });
+      /*fetching data의 시작과 종료 시간을 출력*/
+
+    /*배열을 table형태로 표시 ,앞머리 (index)로 표시됨 */
+    console.table(dogs);
+
+  
+
+  </script>
+</body>
+</html>
