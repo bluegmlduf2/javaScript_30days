@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
+</head>
+<body>
+<script>
+  /*0.keyDown,keyUp,keyPress차이
+    keyDwon,keyUp : 누를때 1번만 동작함. 키보드의 esc부터 abc까지 모두 해당 문자로 반환함 .
+    keyPress : 누르고있으면 지속적으로 동작함. 키보드의 입력값 1~-9 abc..등을 코드로 반환함.
+  */
+  const pressed = [];
+  const secretCode = 'cool';
+
+  window.addEventListener('keyup',function(e){
+    console.log(e);
+    pressed.push(e.key);
+    
+    /*1. 배열함수
+    배열은 -가 붙으면 뒤에서 부터 계산한다.
+    
+    parentArr=['1','2','3']
+    parentArr.slice(0,1) 해당 인덱스의 배열을 반환함 //'1'
+    parentArr.splice(1,2) 해당 인덱스의 배열을 한 후 원래 배열은 제거된 상태로 저장 //parentArr :'1'
+    arr.split('/') 구분 문자를 이용하여 배열을 만듬
+    arr.join('') 배열을 문자열로 만듬 사이의 값은 ''공백 으로 한다
+
+    문자열.includes('a') 해당 문자열을 포함하면 true
+    */
+    pressed.splice(-secretCode.length - 1, pressed.length - secretCode.length);
+    if (pressed.join('').includes(secretCode)) {
+      console.log('DING DING!');
+      cornify_add();
+    }
+    console.log(pressed);    
+  })
+</script>
+</body>
+</html>
